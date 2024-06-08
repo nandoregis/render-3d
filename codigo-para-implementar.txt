@@ -1,0 +1,25 @@
+ setBackground() {
+                const loader = new THREE.TextureLoader();
+                const texture = loader.load('path/to/your/background-image.jpg', () => {
+                    const aspect = this.state.clientWidth / this.state.clientHeight;
+                    const imageAspect = texture.image.width / texture.image.height;
+                    let factor;
+                    if (aspect > imageAspect) {
+                        factor = aspect / imageAspect;
+                        this.scene.background = new THREE.MeshBasicMaterial({
+                            map: texture,
+                            depthWrite: false,
+                            side: THREE.DoubleSide
+                        });
+                        this.scene.background.scale.set(1, factor, 1);
+                    } else {
+                        factor = imageAspect / aspect;
+                        this.scene.background = new THREE.MeshBasicMaterial({
+                            map: texture,
+                            depthWrite: false,
+                            side: THREE.DoubleSide
+                        });
+                        this.scene.background.scale.set(factor, 1, 1);
+                    }
+                });
+            }
