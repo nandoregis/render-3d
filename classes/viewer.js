@@ -4,6 +4,8 @@ import {GLTFLoader} from '../jsm/GLTFLoader.js';
 import {RGBELoader} from '../jsm/RGBELoader.js';
 import {DRACOLoader} from '../jsm/DRACOLoader.js';
 
+const loading = document.getElementById('loading');
+
 export default class Viewer 
 {
 
@@ -44,6 +46,13 @@ export default class Viewer
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
+        // configuração para travar rotação na vertical
+        this.controls.minPolarAngle = Math.PI / 2;
+        this.controls.maxPolarAngle = Math.PI / 2;
+        this.controls.minAzimuthAngle = - Infinity;
+        this.controls.maxAzimuthAngle = Infinity;
+
+        this.controls.enablePan = false; // desativa movimento
         //---------------------------------------------------------------
 
         // STATUS DO MODELO 3D
@@ -188,7 +197,6 @@ export default class Viewer
 		model.position.y -= center.y;
 		model.position.z -= center.z;
 
-        console.log(this.controls);
         this.controls.minDistance = size.x * 1.5;
         this.controls.maxDistance = size.x * 3;
 
@@ -198,6 +206,10 @@ export default class Viewer
         
         this.scene.add(model);
 
+    }
+
+    setColorMesh(mesh, color) {
+        mesh.material.color.set( new THREE.Color(color));
     }
 
     /**
@@ -217,12 +229,37 @@ export default class Viewer
        this.modelUrl = modelUrl; 
     }
 
+    modelTransparent(mesh, color) {
+        
+        if (mesh) {
+                mesh.material = new THREE.MeshPhysicalMaterial({
+                    color: new THREE.Color(color),
+                    metalness: 0,
+                    roughness: 0,
+                    transmission: 0.1, // Vidro
+                    thickness: 0.5, // Espessura do vidro
+                    envMapIntensity: 1,
+                    transparent: true,
+                    opacity: 1,
+                    side: THREE.DoubleSide,
+            });
+        }
+        
+    }
+
     async #run() {
         
         await this.load(this.modelUrl);
-
+        
+        loading.style.display = 'none';
         this.render = this.#render.bind(this);
         requestAnimationFrame(this.render);
     }
 
+    captureImage() {
+        this.renderer.render(this.scene, this.camera);
+        return this.renderer.domElement.toDataURL('image/png');
+    }
+
 }
+

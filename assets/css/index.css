@@ -5,8 +5,92 @@ body {
     height: 100%;
 }
 
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+}
+
+.loading img {
+    width: 8 0px;
+}
+
 .modelo {
     width: 100%;
     height: 100%;
-    /* background-color: aquamarine; */
+}
+
+.config {
+    position: absolute;
+    top: 50%;
+    left: 1%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+}
+
+.camisa, .manequim {
+    background-color: #ccc;
+    padding: 5px;
+}
+
+.icon-manequim {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.camisa {
+    margin-top: 20px;
+}
+
+.cor, input[type=color] {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.cor {
+    margin-bottom: 5px;
+    background-color: rgb(28, 94, 72);
+}
+
+.gerar-img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.download-img {
+    display: none;
+    position: fixed;
+    border: 1px solid white;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background: white;
+}
+
+.download-img__gp {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+
+}
+
+.download-img__image img {
+    max-width: 100%;
 }
